@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14.0)
 project(i2c VERSION 40.0.0) # Compat version with i2clib40 from aminet
 get_verstring(VERSTRING)
 
-add_link_options(-ffreestanding -nostdlib -nostartfiles -Wl,-e,__start)
+add_link_options(-ffreestanding -nostdlib -s -nostartfiles -Wl,-e,__start)
 add_compile_options(-Os -m68040 -fomit-frame-pointer)
 add_compile_definitions(PRIVATE VERSION_STRING="${VERSTRING}")
 
