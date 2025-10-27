@@ -1,13 +1,11 @@
 cmake_minimum_required(VERSION 3.14.0)
 project(i2c VERSION 40.0.0) # Compat version with i2clib40 from aminet
+
+include(cmake/verstring.cmake)
+include(cmake/sfdc.cmake)
+
 get_verstring(VERSTRING)
-
-add_link_options(-ffreestanding -nostdlib -s -nostartfiles -Wl,-e,__start)
-add_compile_options(-Os -m68040 -fomit-frame-pointer)
-add_compile_definitions(PRIVATE VERSION_STRING="${VERSTRING}")
-
-add_library(i2c INTERFACE)
-target_include_directories(i2c INTERFACE include)
+sfdc(sfd/i2c_lib.sfd)
 
 add_executable(i2c.library
     src/main.c
@@ -27,8 +25,11 @@ add_executable(i2c.library
     src/end.c
 )
 
-target_include_directories(i2c.library PRIVATE src)
-target_link_libraries(i2c.library i2c devicetree amiga common)
+target_link_options(i2c.library PRIVATE -ffreestanding -nostdlib -s -nostartfiles -Wl,-e,__start)
+target_compile_options(i2c.library PRIVATE -Os -m68040 -fomit-frame-pointer)
+target_compile_definitions(i2c.library PRIVATE VERSION_STRING="${VERSTRING}")
+target_include_directories(i2c.library PRIVATE src include)
+target_link_libraries(i2c.library i2c devicetree amiga)
 target_compile_definitions(i2c.library PUBLIC
     LIBRARY_NAME="i2c.library"
     LIBRARY_VERSION=${PROJECT_VERSION_MAJOR}
