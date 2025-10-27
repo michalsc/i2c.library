@@ -7,6 +7,10 @@ include(cmake/sfdc.cmake)
 get_verstring(VERSTRING)
 sfdc(sfd/i2c_lib.sfd)
 
+if(NOT TARGET devicetree)
+    add_subdirectory(devicetree.resource EXCLUDE_FROM_ALL)
+endif()
+
 add_executable(i2c.library
     src/main.c
     src/gpio.c
