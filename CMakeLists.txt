@@ -11,6 +11,8 @@ if(NOT TARGET devicetree)
     add_subdirectory(devicetree.resource EXCLUDE_FROM_ALL)
 endif()
 
+target_include_directories(i2c INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 add_executable(i2c.library
     src/main.c
     src/gpio.c
